@@ -1,0 +1,32 @@
+version: "3"
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - kafkacluster
+  kafka:
+    image: kafkadocker_kafka
+    ports:
+      - "9092:9092"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.1.6
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OPTS: "-javaagent:/opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - kafkacluster
+networks:
+  kafkacluster:

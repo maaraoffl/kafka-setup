@@ -1,0 +1,32 @@
+version: '3'
+services:
+  swarmmetrics:
+    image: djenriquez/sherpa
+    ports:
+      - "4550:4550"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+    command: --allow
+    networks:
+      - swarmnet
+  swarmmetricagg:
+    image: logstash
+    command: -f /config-dir/swarm-metric-agg-ls.conf
+    deploy:
+      replicas: 1
+    depends_on:
+      - swarmmetrics
+    volumes:
+      - /home/ubuntu/config:/config-dir
+    networks:
+      - swarmnet
+      - monitors_monitoring
+networks:
+  swarmnet:
+  monitors_monitoring:
+    external: true

@@ -15,6 +15,11 @@ VOLUME ["/kafka"]
 
 ENV KAFKA_HOME /opt/kafka
 ENV PATH ${PATH}:${KAFKA_HOME}/bin
+
+# Adding below entries for enabling JMX
+COPY ./jolokia-jvm-1.3.6-agent.jar /opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar
+RUN chmod a+x /opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar
+
 ADD start-kafka.sh /usr/bin/start-kafka.sh
 ADD broker-list.sh /usr/bin/broker-list.sh
 ADD create-topics.sh /usr/bin/create-topics.sh

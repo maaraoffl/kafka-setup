@@ -1,15 +1,39 @@
-version: '2'
+version: '3'
 services:
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
+    deploy:
+      replicas: 1
+    networks:
+      - kafka_cluster
   kafka:
-    build: .
+    image: kafkadocker_kafka
     ports:
-      - "9092"
+      - "9092:9092"
+      - "1099:1099"
+      - "8778:8778"
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 192.168.99.100
+      - KAFKA_OPTS=-javaagent:/opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.1.6
+      KAFKA_ADVERTISED_PORT: 9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # kafka properties
+      #KAFKA_KAFKA_METRICS_REPORTERS: com.behase.kafka.KafkaElasticsearchMetricsReporter
+      #KAFKA_KAFKA_METRICS_POLLING_INTERVAL_SECS: 10
+      # kafka-elasticsearch-metrics-reporter properties
+      #KAFKA_KAFKA_ELASTICSEARCH_METRICS_NODES: 192.168.1.6:9200
+      #KAFKA_KAFKA_ELASTICSEARCH_METRICS_REPORTER_ENABLED: "true"
+      KAFKA_OPTS: "-javaagent:/opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar"
+      #KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=192.168.1.6 -Dcom.sun.management.jmxremote.rmi.port=1099"
+      #JMX_PORT: 1099
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      replicas: 1
+    networks:
+      - kafka_cluster
+networks:
+  kafka_cluster:

@@ -1,0 +1,60 @@
+version: "3"
+services:
+  web:
+    image: dironman/order-intake-svc:3.0.5
+    ports:
+      - "8080:8080"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "5"
+          memory: 300M
+    volumes:
+      - "/tmp:/logs"
+    networks:
+      - orderapp
+      - kafka_kafkacluster
+  order_processing:
+    image: dironman/order-processing-svc:3.0.2
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "5"
+          memory: 300M
+    networks:
+      - orderapp
+      - kafka_kafkacluster
+  orderappls:
+    image: logstash
+    command: -f /config-dir/spring-boot-ls.conf
+    deploy:
+      mode: global
+    volumes:
+      - $PWD:/config-dir
+      - /tmp:/logs
+    networks:
+      - monitors_monitoring
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "11400:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - orderapp
+      - kafka_kafkacluster
+networks:
+  orderapp:
+  kafka_kafkacluster:
+    external: true
+  monitors_monitoring:
+    external: true
