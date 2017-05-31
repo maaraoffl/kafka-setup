@@ -40,7 +40,7 @@ services:
     deploy:
       mode: global
     volumes:
-      - /home/ubuntu/dockersetup:/config-dir
+      - $PWD/:/config-dir
       - /tmp:/logs
     networks:
       - monitors_monitoring

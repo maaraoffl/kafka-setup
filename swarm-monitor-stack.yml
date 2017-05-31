@@ -22,7 +22,7 @@ services:
     depends_on:
       - swarmmetrics
     volumes:
-      - /home/ubuntu/config:/config-dir
+      - $PWD:/config-dir
     networks:
       - swarmnet
       - monitors_monitoring

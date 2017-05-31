@@ -14,20 +14,16 @@ services:
     image: kafkadocker_kafka
     ports:
       - "9092:9092"
-      - "8778:8778"
-      - "9999:9999"
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 192.168.1.6
+      KAFKA_ADVERTISED_HOST_NAME: 52.90.115.77
       KAFKA_ADVERTISED_PORT: 9092
-      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_CREATE_TOPICS: "order-request-process:1:1,order-delivery-process:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_OPTS: "-javaagent:/opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar"
-      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9999"
-      JMX_PORT: 9999
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
