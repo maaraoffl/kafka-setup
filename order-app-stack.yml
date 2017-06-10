@@ -18,7 +18,7 @@ services:
       - orderapp
       - kafka_kafkacluster
     environment:
-      - KAFKA_BROKER_LIST=52.90.115.77:9092
+      - KAFKA_BROKER_LIST=192.168.1.6:9092,192.168.1.6:9093
   order_processing:
     image: dironman/order-processing-svc:3.0.6
     deploy:
@@ -30,7 +30,7 @@ services:
           cpus: "5"
           memory: 300M
     environment:
-      - KAFKA_BROKER_LIST=52.90.115.77:9092
+      - KAFKA_BROKER_LIST=192.168.1.6:9092,192.168.1.6:9093
     networks:
       - orderapp
       - kafka_kafkacluster
