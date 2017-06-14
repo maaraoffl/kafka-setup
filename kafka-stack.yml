@@ -14,6 +14,7 @@ services:
     image: kafkadocker_kafka
     ports:
       - "9092:9092"
+      - "9999:9999"
     deploy:
       replicas: 1
       restart_policy:
@@ -23,9 +24,9 @@ services:
       KAFKA_ADVERTISED_PORT: 9092
       KAFKA_CREATE_TOPICS: "order-request-process:1:1,order-delivery-process:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_OPTS: "-javaagent:/opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar"
-      # KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9999"
-      # JMX_PORT: 9999
+      # KAFKA_OPTS: "-javaagent:/opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar=port=10001"
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=${HOST_IP_ADDRESS} -Dcom.sun.management.jmxremote.rmi.port=9999"
+      JMX_PORT: 9999
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -42,12 +43,36 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP_ADDRESS}
       KAFKA_ADVERTISED_PORT: 9093
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_OPTS: "-javaagent:/opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar"
-      # KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9999"
-      # JMX_PORT: 9999
+      # KAFKA_OPTS: "-javaagent:/opt/kafka/libs/jolokia-jvm-1.3.6-agent.jar=port=10002"
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.rmi.port=9998"
+      JMX_PORT: 9999
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - kafkacluster
+  kafkajmxls:
+    image: logstash-jmx
+    command: -f /config-dir/kafka-jmx-ls.conf
+    deploy:
+      mode: global
+    environment:
+      - ES_JAVA_OPTS=-Dmapper.allow_dots_in_name=true  
+    volumes:
+      - $PWD/:/config-dir/
+      - /tmp:/logs
+    networks:
+      - monitors_monitoring
+      - kafkacluster
+  # jmxtrans:
+  #   image: jmxtrans/jmxtrans
+  #   deploy:
+  #   volumes:
+  #     - $PWD/json-files:/var/lib/jmxtrans
+  #   environment:
+  #     JMXTRANS_OPTS: "-Dmyserverport=${HOST_IP_ADDRESS} -Dmyserverhost=localhost"
+  #   networks:
+  #     - kafkacluster
 networks:
   kafkacluster:
+  monitors_monitoring:
+    external: true
