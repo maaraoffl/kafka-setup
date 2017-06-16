@@ -26,6 +26,21 @@ services:
     networks:
       - swarmnet
       - monitors_monitoring
+  cadvisor:
+    image: google/cadvisor:latest
+    command: -storage_driver=elasticsearch -storage_driver_es_host="http://elasticsearch:9200"
+    deploy:
+      mode: global
+    depends_on:
+      - swarmmetrics
+    volumes:
+      - /:/rootfs
+      - /var/run:/var/run
+      - /sys:/sys
+      - /var/lib/docker:/var/lib/docker
+    networks:
+      - swarmnet
+      - monitors_monitoring
 networks:
   swarmnet:
   monitors_monitoring:
