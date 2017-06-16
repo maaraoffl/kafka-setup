@@ -50,15 +50,19 @@ docker stack deploy -c swarm-monitor-stack.yml swarmx
 
 # Preparing kafka container deployment
 docker build -t kafkadocker_kafka .
-#export HOST_IP_ADDRESS=54.86.54.84 # Public IP address
 export HOST_IP_ADDRESS=$(curl "http://169.254.169.254/latest/meta-data/public-ipv4")
+
+# Set KNODE_IP_ADDRESS
+export KNODE_IP_ADDRESS=???
+
+docker stack deploy -c kafka-stack.yml kafka
 
 # Pull customized logstash-jmx image
 # Optional
-# docker pull dironman/logstash-jmx
+docker pull dironman/logstash-jmx
 
 # Set label for kafka node
-docker node update --label-add SwarmNodeName=kafka ksgwy2cela7n88kfwxudzp68q # replace with kafka swarm node Id
+#docker node update --label-add SwarmNodeName=kafka ksgwy2cela7n88kfwxudzp68q # replace with kafka swarm node Id
 
-# Get public ip address
-# curl "http://169.254.169.254/latest/meta-data/public-ipv4"
+export ZOOKEEPER_ADDRESS=${HOST_IP_ADDRESS}:2181
+export KAFKA_BROKER_LIST=${HOST_IP_ADDRESS}:9092

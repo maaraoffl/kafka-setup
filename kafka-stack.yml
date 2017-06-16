@@ -34,27 +34,42 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - kafkacluster
-  kafka2:
-    image: kafkadocker_kafka
+  # kafka2:
+  #   image: kafkadocker_kafka
+  #   ports:
+  #     - "9093:9093"
+  #   deploy:
+  #     replicas: 1
+  #     restart_policy:
+  #       condition: on-failure
+  #     placement:
+  #       constraints:
+  #         - "node.hostname == ${KNODE_IP_ADDRESS}"
+  #   environment:
+  #     KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP_ADDRESS}
+  #     KAFKA_ADVERTISED_PORT: 9093
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #     KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=${HOST_IP_ADDRESS} -Dcom.sun.management.jmxremote.rmi.port=9998"
+  #     JMX_PORT: 9998
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   networks:
+  #     - kafkacluster
+  kafkamanager:
+    image: sheepkiller/kafka-manager
     ports:
-      - "9093:9093"
+      - 9000:9000
+    depends_on:
+      - zookeeper
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
-      placement:
-        constraints:
-          - "node.hostname == ${KNODE_IP_ADDRESS}"
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP_ADDRESS}
-      KAFKA_ADVERTISED_PORT: 9093
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=${HOST_IP_ADDRESS} -Dcom.sun.management.jmxremote.rmi.port=9998"
-      JMX_PORT: 9998
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "ZK_HOSTS=zookeeper:2181"
+      - "APPLICATION_SECRET=letmein"
     networks:
-      - kafkacluster
+      - kafka_kafkacluster
   kafkajmxls:
     image: dironman/logstash-jmx
     command: -f /config-dir/kafka-jmx-ls.conf

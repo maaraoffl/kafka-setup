@@ -1,7 +1,7 @@
 version: "3"
 services:
   web:
-    image: dironman/order-intake-svc:3.0.6
+    image: dironman/order-intake-svc:latest
     ports:
       - "8080:8080"
     deploy:
@@ -18,9 +18,10 @@ services:
       - orderapp
       - kafka_kafkacluster
     environment:
-      - KAFKA_BROKER_LIST=192.168.1.6:9092,192.168.1.6:9093
+      - KAFKA_BROKER_LIST=${KAFKA_BROKER_LIST}
+      - ZOOKEEPER_ADDRESS=${ZOOKEEPER_ADDRESS}
   order_processing:
-    image: dironman/order-processing-svc:3.0.6
+    image: dironman/order-processing-svc:latest
     deploy:
       replicas: 1
       restart_policy:
@@ -30,7 +31,8 @@ services:
           cpus: "5"
           memory: 300M
     environment:
-      - KAFKA_BROKER_LIST=192.168.1.6:9092,192.168.1.6:9093
+      - KAFKA_BROKER_LIST=${KAFKA_BROKER_LIST}
+      - ZOOKEEPER_ADDRESS=${ZOOKEEPER_ADDRESS}
     networks:
       - orderapp
       - kafka_kafkacluster

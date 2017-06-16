@@ -1,0 +1,89 @@
+[
+  {
+    "_id": "kafka",
+    "_type": "dashboard",
+    "_source": {
+      "title": "kafka",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"BrokerTopicMetrics_BytesInPerSec_Count\",\"panelIndex\":1,\"row\":1,\"size_x\":6,\"size_y\":4,\"type\":\"visualization\"},{\"col\":7,\"id\":\"BrokerTopicMetrics_BytesOutPerSec_Count\",\"panelIndex\":2,\"row\":1,\"size_x\":6,\"size_y\":4,\"type\":\"visualization\"},{\"col\":7,\"id\":\"TotalFetchRequestsPerSec_Count\",\"panelIndex\":3,\"row\":5,\"size_x\":6,\"size_y\":4,\"type\":\"visualization\"},{\"col\":1,\"id\":\"TotalProduceRequestsPerSec_Count\",\"panelIndex\":4,\"row\":5,\"size_x\":6,\"size_y\":4,\"type\":\"visualization\"},{\"col\":1,\"id\":\"UnderReplicatedPartitions_Value\",\"panelIndex\":5,\"row\":9,\"size_x\":12,\"size_y\":3,\"type\":\"visualization\"}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"colors\":{\"Average metric_value_number\":\"#629E51\"},\"legendOpen\":false}},\"P-2\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"colors\":{\"Average metric_value_number\":\"#F9934E\"},\"legendOpen\":false}},\"P-4\":{\"vis\":{\"colors\":{\"Average metric_value_number\":\"#1F78C1\"},\"legendOpen\":false}},\"P-5\":{\"vis\":{\"colors\":{\"Sum of metric_value_number\":\"#BF1B00\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "TotalFetchRequestsPerSec_Count",
+    "_type": "visualization",
+    "_source": {
+      "title": "TotalFetchRequestsPerSec_Count",
+      "visState": "{\"title\":\"TotalFetchRequestsPerSec_Count\",\"type\":\"area\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"defaultYExtents\":false,\"interpolate\":\"linear\",\"mode\":\"stacked\",\"scale\":\"linear\",\"setYExtents\":false,\"shareYAxis\":true,\"smoothLines\":false,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_value_number\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"kafka*\",\"query\":{\"query_string\":{\"query\":\"metric_path:\\\"kafka1_9999.BrokerTopicMetrics.TotalFetchRequestsPerSec.Count\\\"\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "BrokerTopicMetrics_BytesInPerSec_Count",
+    "_type": "visualization",
+    "_source": {
+      "title": "BrokerTopicMetrics_BytesInPerSec_Count",
+      "visState": "{\"title\":\"BrokerTopicMetrics_BytesInPerSec_Count\",\"type\":\"area\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"smoothLines\":false,\"scale\":\"linear\",\"interpolate\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_value_number\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"kafka*\",\"query\":{\"query_string\":{\"query\":\"metric_path:\\\"kafka1_9999.BrokerTopicMetrics.BytesInPerSec.Count\\\"\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "UnderReplicatedPartitions_Value",
+    "_type": "visualization",
+    "_source": {
+      "title": "UnderReplicatedPartitions_Value",
+      "visState": "{\"title\":\"UnderReplicatedPartitions_Value\",\"type\":\"line\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"showCircles\":true,\"smoothLines\":false,\"interpolate\":\"linear\",\"scale\":\"linear\",\"drawLinesBetweenPoints\":true,\"radiusRatio\":9,\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"sum\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_value_number\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"spy\":{\"mode\":{\"name\":null,\"fill\":false}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"kafka*\",\"query\":{\"query_string\":{\"query\":\"metric_path: \\\"kafka1_9999.ReplicaManager.UnderReplicatedPartitions.Value\\\"\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "BrokerTopicMetrics_BytesOutPerSec_Count",
+    "_type": "visualization",
+    "_source": {
+      "title": "BrokerTopicMetrics_BytesOutPerSec_Count",
+      "visState": "{\"title\":\"BrokerTopicMetrics_BytesOutPerSec_Count\",\"type\":\"area\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"defaultYExtents\":false,\"interpolate\":\"linear\",\"mode\":\"stacked\",\"scale\":\"linear\",\"setYExtents\":false,\"shareYAxis\":true,\"smoothLines\":false,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_value_number\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Average metric_value_number\":\"#EAB839\"}}}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"kafka*\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"metric_path: \\\"kafka1_9999.BrokerTopicMetrics.BytesOutPerSec.Count\\\"\"}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "TotalProduceRequestsPerSec_Count",
+    "_type": "visualization",
+    "_source": {
+      "title": "TotalProduceRequestsPerSec_Count",
+      "visState": "{\"title\":\"New Visualization\",\"type\":\"area\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"smoothLines\":false,\"scale\":\"linear\",\"interpolate\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"metric_value_number\"}},{\"id\":\"2\",\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"auto\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"kafka*\",\"query\":{\"query_string\":{\"query\":\"metric_path:\\\"kafka1_9999.BrokerTopicMetrics.TotalProduceRequestsPerSec.Count\\\"\",\"analyze_wildcard\":true}},\"filter\":[]}"
+      }
+    }
+  }
+]

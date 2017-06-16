@@ -1,0 +1,18 @@
+version: "3"
+services:
+  kafkamanager:
+    image: sheepkiller/kafka-manager
+    ports:
+      - 9000:9000
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      - "ZK_HOSTS=zookeeper:2181"
+      - "APPLICATION_SECRET=letmein"
+    networks:
+      - kafka_kafkacluster
+networks:
+  kafka_kafkacluster:
+    external: true
