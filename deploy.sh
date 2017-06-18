@@ -42,6 +42,8 @@ sudo usermod -aG docker $USER
 
 cd dockersetup
 
+docker build -t kafkadocker_kafka .
+
 # Deploying elasticsearch & kibana
 docker stack deploy -c monitoring-components-stack.yml monitors
 
@@ -49,7 +51,6 @@ docker stack deploy -c monitoring-components-stack.yml monitors
 docker stack deploy -c swarm-monitor-stack.yml swarmx
 
 # Preparing kafka container deployment
-docker build -t kafkadocker_kafka .
 export HOST_IP_ADDRESS=$(curl "http://169.254.169.254/latest/meta-data/public-ipv4")
 
 # Set KNODE_IP_ADDRESS
@@ -63,6 +64,6 @@ docker pull dironman/logstash-jmx
 
 # Set label for kafka node
 #docker node update --label-add SwarmNodeName=kafka ksgwy2cela7n88kfwxudzp68q # replace with kafka swarm node Id
-
-export ZOOKEEPER_ADDRESS=${HOST_IP_ADDRESS}:2181
+#export ZOOKEEPER_ADDRESS=${HOST_IP_ADDRESS}:2181
+export ZOOKEEPER_ADDRESS=zookeeper:2181
 export KAFKA_BROKER_LIST=${HOST_IP_ADDRESS}:9092
