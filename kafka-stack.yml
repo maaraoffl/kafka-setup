@@ -51,7 +51,7 @@ services:
   #   environment:
   #     KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP_ADDRESS}
   #     KAFKA_ADVERTISED_PORT: 9093
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #     KAFKA_ZOOKEEPER_CONNECT: ${HOST_IP_ADDRESS}:2181
   #     KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=${HOST_IP_ADDRESS} -Dcom.sun.management.jmxremote.rmi.port=9998"
   #     JMX_PORT: 9998
   #   volumes:

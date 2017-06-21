@@ -8,10 +8,9 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-      resources:
-        limits:
-          cpus: "5"
-          memory: 300M
+      placement:
+        constraints:
+          - "node.hostname == ${KNODE_IP_ADDRESS}"
     volumes:
       - "/tmp:/logs"
     networks:
@@ -26,10 +25,9 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-      resources:
-        limits:
-          cpus: "5"
-          memory: 300M
+      placement:
+        constraints:
+          - "node.hostname == ${KNODE_IP_ADDRESS}"
     environment:
       - KAFKA_BROKER_LIST=${KAFKA_BROKER_LIST}
       - ZOOKEEPER_ADDRESS=${ZOOKEEPER_ADDRESS}
